@@ -132,7 +132,7 @@
     <Reference Include="I18N.West" />
     <Reference Include="I18N.CJK" />
     <Reference Include="MySql.Data.CF">
-      <HintPath>..\..\MySQL-Plugin-1.0 2\lib\ios\MySql.Data.CF.dll</HintPath>
+      <HintPath>..\MySql.Data.CF.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
