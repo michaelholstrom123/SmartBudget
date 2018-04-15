@@ -88,9 +88,23 @@ namespace PrismIntro.ViewModels
         }
         private void OnNavToMainPage()
         {
-            String Result = DependencyService.Get<IDbDataFetcher>().GetData("SELECT * FROM USERS WHERE password = 'lolatyou'");
+            String Querey = $"SELECT PASSWORD FROM USERS WHERE USERNAME = '{userC}'";
+            Debug.WriteLine($"**** {Querey}");
+            List<string> Result = DependencyService.Get<IDbDataFetcher>().GetData(Querey);
 
-            ResultText = Result;
+            if(Result.Count() == 0)
+            {
+                ResultText = "Username Not Found";
+            }
+            else if(Result[0] == userPass)
+            {
+                ResultText = "LOGIN SUCCESFULL"; 
+            }
+            else
+            {
+                ResultText = "INCORRECT PASSWORD";
+            }
+                
 
         }
 

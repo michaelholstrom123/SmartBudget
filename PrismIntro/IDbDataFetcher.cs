@@ -5,6 +5,6 @@ namespace PrismIntro
 {
     public interface IDbDataFetcher
     {
-        String GetData(string command);    
+        List<string> GetData(string command);    
     }
 }

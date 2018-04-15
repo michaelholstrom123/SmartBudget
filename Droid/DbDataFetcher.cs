@@ -9,15 +9,15 @@ using System.Diagnostics;
 namespace PrismIntro.Droid
 
 {
-
-
     public class DbDataFetcher : IDbDataFetcher
     {
         public DbDataFetcher() { }
 
-        public String GetData(string command)
+        public List<string> GetData(string command)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GetData)} Droid");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GetData)} DROID");
+
+            List<string> result = new List<string>();
 
             MySqlConnection sqlconn;
             string connsqlstring = string.Format("Server=csusm.c0uo1rgt9ctn.us-west-2.rds.amazonaws.com;Port=3306;database=S(G)_E4J;User Id=cs441;password=csusmcs441;charset=utf8");
@@ -39,12 +39,25 @@ namespace PrismIntro.Droid
                         break;
                 }
             }
+
+            Debug.WriteLine($"**** CONNECTION OPEN");
             MySqlCommand sqlcmd = new MySqlCommand(command, sqlconn);
-            String result = sqlcmd.ExecuteScalar().ToString();
+            MySqlDataReader reader = sqlcmd.ExecuteReader();
+
+            int i = 0;
+            while (reader.Read())
+            {
+                result.Add(reader[reader.GetName(i)].ToString());
+                Debug.WriteLine($"**** {result[i]}");
+                i = i + 1;
+            }
+
+            reader.Close();
             sqlconn.Close();
 
-            return result;
+            Debug.WriteLine($"**** CONNECTION CLOSED");
 
+            return result;
         }
     }
 }
