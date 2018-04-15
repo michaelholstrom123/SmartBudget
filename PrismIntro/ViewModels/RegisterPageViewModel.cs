@@ -7,6 +7,10 @@ using System.Diagnostics;
 using Prism.Navigation;
 using Prism.Commands;
 using PrismIntro.ViewModels;
+using PrismIntro.Views;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
 namespace PrismIntro.ViewModels
 {
     public class RegisterPageViewModel : BindableBase, INavigationAware
@@ -52,9 +56,15 @@ namespace PrismIntro.ViewModels
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatingTo)}");
         }
+
         private void AddUserCommandPage()
         {
-          
+            string Querey = $"INSERT INTO USERS VALUES('{User}','{Password}')";
+            Debug.WriteLine($"**** {Querey}");
+
+            DependencyService.Get<IDbDataWriter>().WriteData(Querey);
+           
+
         }
       
     }

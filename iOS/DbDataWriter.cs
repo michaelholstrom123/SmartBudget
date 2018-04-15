@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using PrismIntro.Droid;
-using MySql.Data.MySqlClient;
-using System.Data;
 using System.Diagnostics;
+using MySql.Data.MySqlClient;
 
-[assembly: Xamarin.Forms.Dependency(typeof(DbDataFetcher))]
-namespace PrismIntro.Droid
-
+[assembly: Xamarin.Forms.Dependency(typeof(PrismIntro.iOS.DbDataWriter))]
+namespace PrismIntro.iOS
 {
-    public class DbDataFetcher : IDbDataFetcher
+    public class DbDataWriter : IDbDataWriter
     {
 
-        public List<string> GetData(string command)
+        void IDbDataWriter.WriteData(string command)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GetData)} DROID");
-
-            List<string> result = new List<string>();
-
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(IDbDataWriter.WriteData)}:  iOS");
             MySqlConnection sqlconn;
             string connsqlstring = string.Format("Server=csusm.c0uo1rgt9ctn.us-west-2.rds.amazonaws.com;Port=3306;database=S(G)_E4J;User Id=cs441;password=csusmcs441;charset=utf8");
             sqlconn = new MySqlConnection(connsqlstring);
@@ -39,24 +32,15 @@ namespace PrismIntro.Droid
                 }
             }
 
-            Debug.WriteLine($"**** CONNECTION OPEN");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(IDbDataWriter.WriteData)}: CONNECTION OPEN");
             MySqlCommand sqlcmd = new MySqlCommand(command, sqlconn);
-            MySqlDataReader reader = sqlcmd.ExecuteReader();
 
-            int i = 0;
-            while (reader.Read())
-            {
-                result.Add(reader[reader.GetName(i)].ToString());
-                Debug.WriteLine($"**** {result[i]}");
-                i = i + 1;
-            }
+            sqlcmd.ExecuteNonQuery();
 
-            reader.Close();
             sqlconn.Close();
-
-            Debug.WriteLine($"**** CONNECTION CLOSED");
-
-            return result;
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(IDbDataWriter.WriteData)}: CONNECTION CLOSED");
         }
     }
 }
+
+

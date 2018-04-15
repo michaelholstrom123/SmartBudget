@@ -59,6 +59,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="IDbDataFetcher.cs" />
+    <Compile Include="IDbDataWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

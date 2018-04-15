@@ -88,7 +88,7 @@ namespace PrismIntro.ViewModels
         }
         private void OnNavToMainPage()
         {
-            String Querey = $"SELECT PASSWORD FROM USERS WHERE USERNAME = '{userC}'";
+            string Querey = $"SELECT PASSWORD FROM USERS WHERE USERNAME = '{userC}'";
             Debug.WriteLine($"**** {Querey}");
             List<string> Result = DependencyService.Get<IDbDataFetcher>().GetData(Querey);
 

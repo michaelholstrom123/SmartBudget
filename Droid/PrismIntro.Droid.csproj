@@ -159,6 +159,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\DbFetcher.cs" />
     <Compile Include="DbDataFetcher.cs" />
+    <Compile Include="DbDataWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
