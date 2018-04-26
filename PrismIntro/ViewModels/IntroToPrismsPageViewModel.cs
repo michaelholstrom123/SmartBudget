@@ -11,6 +11,7 @@ using PrismIntro.ViewModels;
 using PrismIntro.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Threading.Tasks;
 
 namespace PrismIntro.ViewModels
 {
@@ -18,9 +19,7 @@ namespace PrismIntro.ViewModels
     public class IntroToPrismsPageViewModel : BindableBase, INavigationAware
     {
         INavigationService _navigationService;
-        INavigationService _navigationService1;
-
-
+     
         public DelegateCommand NavToRegisterCommand { get; set; }
         public DelegateCommand LoginPageCommand { get; set; }
 
@@ -59,8 +58,7 @@ namespace PrismIntro.ViewModels
 
             Title = "Launch Page";
             _navigationService = navigationService;
-            _navigationService1 = navigationService;
-
+ 
             NavToRegisterCommand = new DelegateCommand(OnNavToRegisterPage);
             LoginPageCommand = new DelegateCommand(OnNavToMainPage);
 
@@ -86,27 +84,54 @@ namespace PrismIntro.ViewModels
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavToRegisterPage)}");
             _navigationService.NavigateAsync("RegisterPage");
         }
-        private void OnNavToMainPage()
+        private async void OnNavToMainPage()
         {
-            string Querey = $"SELECT PASSWORD FROM USERS WHERE USERNAME = '{userC}'";
-            Debug.WriteLine($"**** {Querey}");
-            List<string> Result = DependencyService.Get<IDbDataFetcher>().GetData(Querey);
 
-            if(Result.Count() == 0)
+
+            bool flag = false;
+
+            await Task.Run(async () =>
             {
-                ResultText = "Username Not Found";
-            }
-            else if(Result[0] == userPass)
+                try
+                {
+                    string Querey = $"SELECT PASSWORD FROM USERS WHERE USERNAME = '{userC}'";
+                    Debug.WriteLine($"**** {Querey}");
+                    List<string> Result = DependencyService.Get<IDbDataFetcher>().GetData(Querey);
+
+                    if (Result.Count() == 0)
+                    {
+                        ResultText = "Username Not Found";
+
+                    }
+                    else if (Result[0] == userPass)
+                    {
+                        ResultText = "LOGIN SUCCESFULL";
+                        flag = true;
+
+                    }
+                    else
+                    {
+                        ResultText = "INCORRECT PASSWORD";
+                    }
+
+                }
+                catch (System.OperationCanceledException ex)
+                {
+                    Debug.WriteLine($"Text load cancelled: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            });
+            if(flag == true)
             {
-                ResultText = "LOGIN SUCCESFULL"; 
+                await _navigationService.NavigateAsync("/MainPage");
             }
-            else
-            {
-                ResultText = "INCORRECT PASSWORD";
-            }
-                
+
+
 
         }
-
+               
     }
 }

@@ -1,24 +1,25 @@
-﻿using System.Diagnostics;
-using Prism;
+﻿using Prism;
 using Prism.Ioc;
-using Prism.Navigation;
-using Prism.Unity;
 using PrismIntro.ViewModels;
 using PrismIntro.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Prism.Unity;
+using PrismIntro.Services;
 
-
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace PrismIntro
 {
     public partial class App : PrismApplication
     {
-       
-        public App(IPlatformInitializer intializer = null):base(intializer){ }
+
+        public App() : this(null) { }
+
+        public App(IPlatformInitializer initializer) : base(initializer) { }
 
         protected override async void OnInitialized()//Need for Prism to intialize component.
         {
-            Debug.WriteLine($"****{this.GetType().Name}.{nameof(OnInitialized)}");
+           
             InitializeComponent();
             await NavigationService.NavigateAsync("PrismIntroPage");
 
@@ -26,12 +27,14 @@ namespace PrismIntro
         }
         protected override void RegisterTypes(IContainerRegistry containerRegistry) //One of first called.
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RegisterTypes)}");
+            
 
             containerRegistry.RegisterForNavigation<RegisterPage>();
-            containerRegistry.RegisterForNavigation<MainPage>();
+            containerRegistry.RegisterForNavigation<MainPage,MainPageViewModel>();
             containerRegistry.RegisterForNavigation<PrismIntroPage, IntroToPrismsPageViewModel>();
-           
+
+            containerRegistry.RegisterSingleton<IRepository, Repository>();
+
         }
        
 
