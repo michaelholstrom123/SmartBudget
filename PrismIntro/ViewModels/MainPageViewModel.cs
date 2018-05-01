@@ -86,9 +86,16 @@ namespace PrismIntro.ViewModels
         /// the currently selected item.
         /// </summary>
         /// <param name="categorySelected">Person selected.</param>
-        private void OnCategorySelected(Category categorySelected)
+        private async void OnCategorySelected(Category categorySelected)
         {
+            
+            var categoryToBePassed = new Category { CategoryName = categorySelected.ToString() };
+            
+            var navParams = new NavigationParameters();
+            navParams.Add("a", categoryToBePassed);
+            
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnCategorySelected)}:  {categorySelected}");
+            await _navigationService.NavigateAsync("CategoryPage",navParams);
         }
 
         /// <summary>

@@ -30,6 +30,8 @@ namespace PrismIntro
             
 
             containerRegistry.RegisterForNavigation<RegisterPage>();
+            containerRegistry.RegisterForNavigation<empty>();
+            containerRegistry.RegisterForNavigation<CategoryPage, CategoryPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage,MainPageViewModel>();
             containerRegistry.RegisterForNavigation<PrismIntroPage, IntroToPrismsPageViewModel>();
 

@@ -10,7 +10,11 @@ namespace PrismIntro.Services
         /// Fetches people from our data source, which could be a database or web service of some sort.
         /// </summary>
         /// <returns>A list of Person objects.</returns>
+        /// 
+        
         Task<IList<Category>> GetCategories();
+        Task<IList<Transaction>> GetTransactions();
+
 
         /// <summary>
         /// An overload of GetPeople to allow you ro return any number of people so you can experiment with
@@ -20,6 +24,14 @@ namespace PrismIntro.Services
         /// <param name="numberOfCategories">Number of Person objects you'd like to retrieve.</param>
         Task<IList<Category>> GetCategories(int numberOfCategories);
 
-        
+        /// <summary>
+        /// An overload of GetPeople to allow you ro return any number of people so you can experiment with
+        /// a much longer list without having to create a hundred entries of your own.
+        /// </summary>
+        /// <returns>As many Person objects as you specify.</returns>
+        /// <param name="numberOfTransactions">Number of Person objects you'd like to retrieve.</param>
+        Task<IList<Transaction>> GetTransactions(int numberOfTransactions);
+
+
     }
 }

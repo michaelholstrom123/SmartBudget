@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:prismBehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             ios:Page.UseSafeArea="true"
+             x:Class="PrismIntro.Views.CategoryPage"
+             x:Name="CategoryPage"
+             Title="{Binding Title}"
+             IsBusy="{Binding ShowIsBusySpinner}">
+    <StackLayout
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+
+        <ListView 
+            ItemsSource="{Binding Transaction}"
+            IsRefreshing="{Binding ShowIsBusySpinner}"
+            SeparatorVisibility="Default"
+            SeparatorColor="Navy"
+            SelectedItem="{Binding SelectedTransaction}"
+            IsPullToRefreshEnabled="true"
+            RefreshCommand="{Binding PullToRefreshCommand}">
+
+            <ListView.Behaviors>
+                <prismBehaviors:EventToCommandBehavior
+                    EventName="ItemTapped"
+                    Command="{Binding TransactionTappedCommand}"
+                    EventArgsParameterPath="Item" />
+                <prismBehaviors:EventToCommandBehavior
+                    EventName="ItemSelected"
+                    Command="{Binding TransactionSelectedCommand}"
+                    EventArgsParameterPath="SelectedItem" />
+            </ListView.Behaviors>
+            <ListView.Header>
+                <Grid
+                    BackgroundColor="White"
+                    Padding="20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="50" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="*" />
+                        <ColumnDefinition
+                            Width="3*" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label
+                        
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Text="{Binding HeaderText}"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center"
+                        HorizontalOptions="FillAndExpand"
+                        FontAttributes="Bold"
+                        FontSize="Medium"
+                        TextColor="Black" />
+
+                </Grid>
+            </ListView.Header>
+
+            <!-- ITEM TEMPLATES FOR EXPENSE CATEOGORIES-->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell
+                        Text="{Binding TransactionName}"
+                        TextColor="Navy"
+                        DetailColor="Gray">
+
+                        <TextCell.ContextActions>
+                            <MenuItem
+                                Text="Info"
+                                CommandParameter="{Binding .}"
+                                Command="{Binding Path=BindingContext.InfoCommand, Source={x:Reference Name=CategoryPage}}" />
+
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
+    

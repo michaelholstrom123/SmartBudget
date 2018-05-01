@@ -33,7 +33,7 @@
         </ListView.Behaviors>
         <ListView.Header>
             <Grid
-                    BackgroundColor="AliceBlue"
+                    BackgroundColor="White"
                     Padding="20,0">
                 <Grid.RowDefinitions>
                     <RowDefinition

@@ -17,7 +17,9 @@ namespace PrismIntro.Models
 
         public override string ToString()
         {
-            return $"CategoryName={CategoryName}";
+            return CategoryName;
         }
+        
+    
     }
 }
