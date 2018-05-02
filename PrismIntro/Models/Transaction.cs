@@ -15,6 +15,13 @@ namespace PrismIntro.Models
             set { SetProperty(ref _transactionName, value); }
         }
 
+        private string _transactionAmmount;
+        public string TransactionAmmount
+        {
+            get { return _transactionAmmount; }
+            set { SetProperty(ref _transactionAmmount, value); }
+        }
+
         public override string ToString()
         {
             return $"CategoryName={TransactionName}";

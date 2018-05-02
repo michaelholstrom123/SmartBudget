@@ -14,13 +14,26 @@ using System.ComponentModel;
 using PrismIntro.ViewModels;
 using PrismIntro.Models;
 using PrismIntro.Services;
+using Xamarin.Forms;
 
 namespace PrismIntro.ViewModels
 {
     public class CategoryPageViewModel : ViewModelBase
     {
         IRepository _repository;
-        public Category _category;
+        private Category _category;
+        public Category Category
+        {
+            get { return _category; }
+            set { SetProperty(ref _category, value); }
+        }
+
+        private User _currentUser;
+        public User CurrentUser
+        {
+            get { return _currentUser; }
+            set { SetProperty(ref _currentUser, value); }
+        }
 
 
         public DelegateCommand PullToRefreshCommand { get; set; }
@@ -73,7 +86,6 @@ namespace PrismIntro.ViewModels
             InfoCommand = new DelegateCommand<Transaction>(OnInfoTapped);
             AddTransactionCommand = new DelegateCommand(AddTransaction);
 
-            RefreshPeopleList();
 
         }
 
@@ -92,7 +104,7 @@ namespace PrismIntro.ViewModels
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnPullToRefresh)}");
 
-            await RefreshPeopleList();
+            await RefreshTransactionsList();
         }
 
         /// <summary>
@@ -123,20 +135,43 @@ namespace PrismIntro.ViewModels
         {
             
             base.OnNavigatingTo(parameters);
-            if (parameters != null && parameters.ContainsKey("a"))
+            if (parameters != null && parameters.ContainsKey(Constants.Constants.CATEGORY_KEY))
             {
-                _category = (Category)parameters["a"];
+                Category = (Category)parameters[Constants.Constants.CATEGORY_KEY];
             }
-            HeaderText = _category.ToString();
+            if (parameters != null && parameters.ContainsKey(Constants.Constants.CATEGORY_KEY))
+            {
+                CurrentUser = (User)parameters[Constants.Constants.USER_KEY];
+            }
+            HeaderText = Category.ToString();
+
+            RefreshTransactionsList();
 
         }
-        private async Task RefreshPeopleList()
+        private async Task RefreshTransactionsList()
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RefreshPeopleList)}");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RefreshTransactionsList)}");
 
             ShowIsBusySpinner = true;
             SelectedTransaction = null;
-            var listOfTransactions = await _repository.GetTransactions();
+            //var listOfTransactions = await _repository.GetTransactions();
+            string query = $"Select EXPENSE_TITLE FROM EXPENSES WHERE USER = '{CurrentUser.UserName}' AND EXPENSE_CAT = '{Category.CategoryName}'";
+            string query1 = $"Select EXPENSE_VALUE FROM EXPENSES WHERE USER = '{CurrentUser.UserName}' AND EXPENSE_CAT = '{Category.CategoryName}'";
+
+            List<string> returnedList = DependencyService.Get<IDbDataFetcher>().GetData(query);
+            List<string> returndList1 = DependencyService.Get<IDbDataFetcher>().GetData(query1);
+
+            List<Transaction> listOfTransactions = new List<Transaction>();
+
+
+            for (int i = 0; i < returnedList.Count(); i++)
+            {
+                Transaction newTransaction = new Transaction();
+                newTransaction.TransactionName = returnedList[i];
+                newTransaction.TransactionAmmount = returndList1[i];
+                listOfTransactions.Add(newTransaction);
+            }
+
             Transaction = new ObservableCollection<Transaction>(listOfTransactions);
             ShowIsBusySpinner = false;
         }

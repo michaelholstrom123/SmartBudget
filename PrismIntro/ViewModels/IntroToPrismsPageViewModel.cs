@@ -126,7 +126,10 @@ namespace PrismIntro.ViewModels
             });
             if(flag == true)
             {
-                await _navigationService.NavigateAsync("/MainPage");
+                NavigationParameters navParams = new NavigationParameters();
+                navParams.Add(Constants.Constants.USER_KEY, userC);
+
+                await _navigationService.NavigateAsync("MainPage", navParams);
             }
 
 

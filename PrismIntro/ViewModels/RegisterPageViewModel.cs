@@ -10,6 +10,7 @@ using PrismIntro.ViewModels;
 using PrismIntro.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PrismIntro.Constants;
 
 namespace PrismIntro.ViewModels
 {
@@ -57,14 +58,15 @@ namespace PrismIntro.ViewModels
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatingTo)}");
         }
 
-        private void AddUserCommandPage()
+        private async void AddUserCommandPage()
         {
             string Querey = $"INSERT INTO USERS VALUES('{User}','{Password}')";
             Debug.WriteLine($"**** {Querey}");
 
             DependencyService.Get<IDbDataWriter>().WriteData(Querey);
-           
-
+            NavigationParameters navParams = new NavigationParameters();
+            navParams.Add(Constants.Constants.USER_KEY, User); 
+            await _navigationService.NavigateAsync("MainPage", navParams);
         }
       
     }

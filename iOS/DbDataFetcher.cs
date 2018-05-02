@@ -49,7 +49,7 @@ namespace PrismIntro.iOS
             int i = 0;
             while (reader.Read())
             {
-                result.Add(reader[reader.GetName(i)].ToString());
+                result.Add(reader[reader.GetName(0)].ToString());
                 Debug.WriteLine($"**** {result[i]}");
                 i = i + 1;
             }

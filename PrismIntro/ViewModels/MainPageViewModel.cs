@@ -14,10 +14,11 @@ using System.ComponentModel;
 using PrismIntro.ViewModels;
 using PrismIntro.Models;
 using PrismIntro.Services;
+using Xamarin.Forms;
 
 namespace PrismIntro.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : ViewModelBase 
     {
         IRepository _repository;
 
@@ -52,6 +53,13 @@ namespace PrismIntro.ViewModels
             set { SetProperty(ref _selectedCategory, value); }
         }
 
+        private User _currentUser;
+        public User CurrentUser
+        {
+            get { return _currentUser; }
+            set { SetProperty(ref _currentUser, value); }
+        }
+
         public MainPageViewModel(INavigationService navigationService, IRepository repository)
             : base(navigationService)
         {
@@ -63,7 +71,6 @@ namespace PrismIntro.ViewModels
             CategorySelectedCommand = new DelegateCommand<Category>(OnCategorySelected);
             InfoCommand = new DelegateCommand<Category>(OnInfoTapped);
 
-            RefreshPeopleList();
            
         }
 
@@ -77,7 +84,7 @@ namespace PrismIntro.ViewModels
         {
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnPullToRefresh)}");
 
-            await RefreshPeopleList();
+            await RefreshCategoryList();
         }
 
         /// <summary>
@@ -92,7 +99,8 @@ namespace PrismIntro.ViewModels
             var categoryToBePassed = new Category { CategoryName = categorySelected.ToString() };
             
             var navParams = new NavigationParameters();
-            navParams.Add("a", categoryToBePassed);
+            navParams.Add(Constants.Constants.CATEGORY_KEY, categoryToBePassed);
+            navParams.Add(Constants.Constants.USER_KEY, CurrentUser);
             
             Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnCategorySelected)}:  {categorySelected}");
             await _navigationService.NavigateAsync("CategoryPage",navParams);
@@ -113,19 +121,36 @@ namespace PrismIntro.ViewModels
         /// </summary>
         public override void OnNavigatingTo(NavigationParameters parameters)
         {
-            if (parameters != null)
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(OnNavigatingTo)}");
+            base.OnNavigatingTo(parameters);
+            if (parameters != null && parameters.ContainsKey(Constants.Constants.USER_KEY))
             {
-                base.OnNavigatingTo(parameters);
+                CurrentUser = new User();
+                CurrentUser.UserName = (string)parameters[Constants.Constants.USER_KEY];
+                RefreshCategoryList();
             }
               
         }
-        private async Task RefreshPeopleList()
+        private async Task RefreshCategoryList()
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RefreshPeopleList)}");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(RefreshCategoryList)}");
 
             ShowIsBusySpinner = true;
             SelectedCategory = null;
-            var listOfCategories = await _repository.GetCategories();
+            //var listOfCategories = await _repository.GetCategories();
+            string query = $"Select CATEGORY_TITLE From EXPENSE_CATEGORY WHERE USER = '{CurrentUser.UserName}';";
+
+            List<string> returnedList = DependencyService.Get<IDbDataFetcher>().GetData(query);
+
+            List<Category> listOfCategories = new List<Category>();
+
+            for (int i = 0; i < returnedList.Count(); i++)
+            {
+                Category newCategory = new Category();
+                newCategory.CategoryName = returnedList[i];
+                listOfCategories.Add(newCategory);
+            }
+
             Category = new ObservableCollection<Category>(listOfCategories);
             ShowIsBusySpinner = false;
         }
