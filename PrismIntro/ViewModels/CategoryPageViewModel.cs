@@ -27,6 +27,7 @@ namespace PrismIntro.ViewModels
         public DelegateCommand<Transaction> TransactionTappedCommand { get; set; }
         public DelegateCommand<Transaction> TransactionSelectedCommand { get; set; }
         public DelegateCommand<Transaction> InfoCommand { get; set; }
+        public DelegateCommand AddTransactionCommand { get; set; }
 
 
         //Note:  This is bound to the ItemsSource for the ListView on MainPage.
@@ -70,9 +71,15 @@ namespace PrismIntro.ViewModels
             TransactionTappedCommand = new DelegateCommand<Transaction>(OnTransactionTapped);
             TransactionSelectedCommand = new DelegateCommand<Transaction>(OnTransactionSelected);
             InfoCommand = new DelegateCommand<Transaction>(OnInfoTapped);
+            AddTransactionCommand = new DelegateCommand(AddTransaction);
 
             RefreshPeopleList();
 
+        }
+
+        private async void AddTransaction()
+        {
+            await _navigationService.NavigateAsync(nameof(empty), null, true, true);
         }
 
         private void OnInfoTapped(Transaction transactionTapped)

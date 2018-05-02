@@ -58,6 +58,14 @@
                         FontAttributes="Bold"
                         FontSize="Medium"
                         TextColor="Black" />
+                    <Button
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="Add"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        Command="{Binding AddTransactionCommand}" />
 
                 </Grid>
             </ListView.Header>
@@ -74,7 +82,10 @@
                             <MenuItem
                                 Text="Info"
                                 CommandParameter="{Binding .}"
-                                Command="{Binding Path=BindingContext.InfoCommand, Source={x:Reference Name=CategoryPage}}" />
+                                Command="{Binding Path=BindingContext.InfoCommand, Source={x:Reference Name=CategoryPage}}"/>
+                            
+
+
 
                         </TextCell.ContextActions>
                     </TextCell>
