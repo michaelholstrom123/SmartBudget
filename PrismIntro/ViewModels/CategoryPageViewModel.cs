@@ -35,6 +35,13 @@ namespace PrismIntro.ViewModels
             set { SetProperty(ref _currentUser, value); }
         }
 
+        private double _categoryTotal;
+        public double CategoryTotal
+        {
+            get { return _categoryTotal; }
+            set { SetProperty(ref _categoryTotal, value); }
+        }
+
 
         public DelegateCommand PullToRefreshCommand { get; set; }
         public DelegateCommand<Transaction> TransactionTappedCommand { get; set; }
@@ -91,7 +98,10 @@ namespace PrismIntro.ViewModels
 
         private async void AddTransaction()
         {
-            await _navigationService.NavigateAsync(nameof(empty), null, true, true);
+            NavigationParameters navParams = new NavigationParameters();
+            navParams.Add(Constants.Constants.USER_KEY, CurrentUser);
+            navParams.Add(Constants.Constants.CATEGORY_KEY, Category);
+            await _navigationService.NavigateAsync("AddExpensePage", navParams);
         }
 
         private void OnInfoTapped(Transaction transactionTapped)
@@ -145,6 +155,8 @@ namespace PrismIntro.ViewModels
             }
             HeaderText = Category.ToString();
 
+            CategoryTotal = 0;
+
             RefreshTransactionsList();
 
         }
@@ -170,6 +182,8 @@ namespace PrismIntro.ViewModels
                 newTransaction.TransactionName = returnedList[i];
                 newTransaction.TransactionAmmount = returndList1[i];
                 listOfTransactions.Add(newTransaction);
+
+                CategoryTotal += Double.Parse(returndList1[i]);
             }
 
             Transaction = new ObservableCollection<Transaction>(listOfTransactions);

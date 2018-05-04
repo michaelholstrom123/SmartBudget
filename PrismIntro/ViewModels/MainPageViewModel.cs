@@ -26,6 +26,7 @@ namespace PrismIntro.ViewModels
         public DelegateCommand<Category> CategoryTappedCommand { get; set; }
         public DelegateCommand<Category> CategorySelectedCommand { get; set; }
         public DelegateCommand<Category> InfoCommand { get; set; }
+        public DelegateCommand AddCategoryCommand { get; set; }
    
 
         //Note:  This is bound to the ItemsSource for the ListView on MainPage.
@@ -64,14 +65,21 @@ namespace PrismIntro.ViewModels
             : base(navigationService)
         {
             _repository = repository;
-            Title = "Party People";
+
 
             PullToRefreshCommand = new DelegateCommand(OnPullToRefresh);
             CategoryTappedCommand = new DelegateCommand<Category>(OnCategoryTapped);
             CategorySelectedCommand = new DelegateCommand<Category>(OnCategorySelected);
             InfoCommand = new DelegateCommand<Category>(OnInfoTapped);
-
+            AddCategoryCommand = new DelegateCommand(OnAddCategoryTapped);
            
+        }
+
+        private async void OnAddCategoryTapped()
+        {
+            NavigationParameters navParams = new NavigationParameters();
+            navParams.Add(Constants.Constants.USER_KEY, CurrentUser);
+            await _navigationService.NavigateAsync("AddCategoryPage", navParams);
         }
 
         private void OnInfoTapped(Category categoryTapped)
@@ -127,8 +135,8 @@ namespace PrismIntro.ViewModels
             {
                 CurrentUser = new User();
                 CurrentUser.UserName = (string)parameters[Constants.Constants.USER_KEY];
-                RefreshCategoryList();
             }
+            RefreshCategoryList();
               
         }
         private async Task RefreshCategoryList()

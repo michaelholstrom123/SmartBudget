@@ -11,10 +11,11 @@ namespace PrismIntro.Droid
 {
     public class DbDataFetcher : IDbDataFetcher
     {
+        public DbDataFetcher() { }
 
         public List<string> GetData(string command)
         {
-            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GetData)} DROID");
+            Debug.WriteLine($"**** {this.GetType().Name}.{nameof(GetData)} ios");
 
             List<string> result = new List<string>();
 
@@ -46,7 +47,7 @@ namespace PrismIntro.Droid
             int i = 0;
             while (reader.Read())
             {
-                result.Add(reader[reader.GetName(i)].ToString());
+                result.Add(reader[reader.GetName(0)].ToString());
                 Debug.WriteLine($"**** {result[i]}");
                 i = i + 1;
             }

@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:prismBehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-             ios:Page.UseSafeArea="true"
-             x:Class="PrismIntro.Views.CategoryPage"
-             x:Name="CategoryPage"
-             Title="{Binding Title}"
-             IsBusy="{Binding ShowIsBusySpinner}">
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:prismBehaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    ios:Page.UseSafeArea="true"
+    x:Class="PrismIntro.Views.CategoryPage"
+    x:Name="CategoryPage"
+    Title="{Binding Title}"
+    IsBusy="{Binding ShowIsBusySpinner}">
     <StackLayout
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
-
-        <ListView 
+        <ListView
             ItemsSource="{Binding Transaction}"
             IsRefreshing="{Binding ShowIsBusySpinner}"
             SeparatorVisibility="Default"
@@ -20,7 +20,6 @@
             SelectedItem="{Binding SelectedTransaction}"
             IsPullToRefreshEnabled="true"
             RefreshCommand="{Binding PullToRefreshCommand}">
-
             <ListView.Behaviors>
                 <prismBehaviors:EventToCommandBehavior
                     EventName="ItemTapped"
@@ -48,7 +47,6 @@
                             Width="*" />
                     </Grid.ColumnDefinitions>
                     <Label
-                        
                         Grid.Row="0"
                         Grid.Column="1"
                         Text="{Binding HeaderText}"
@@ -66,10 +64,8 @@
                         HorizontalOptions="End"
                         VerticalOptions="Center"
                         Command="{Binding AddTransactionCommand}" />
-
                 </Grid>
             </ListView.Header>
-
             <!-- ITEM TEMPLATES FOR EXPENSE CATEOGORIES-->
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -78,21 +74,23 @@
                         Detail="{Binding TransactionAmmount}"
                         TextColor="Navy"
                         DetailColor="Gray">
-
                         <TextCell.ContextActions>
                             <MenuItem
                                 Text="Info"
                                 CommandParameter="{Binding .}"
-                                Command="{Binding Path=BindingContext.InfoCommand, Source={x:Reference Name=CategoryPage}}"/>
-                            
-
-
-
+                                Command="{Binding Path=BindingContext.InfoCommand, Source={x:Reference Name=CategoryPage}}" />
                         </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <StackLayout
+            Orientation="Horizontal">
+            <Label
+                Text="Total: " />
+            <Label
+                Text="{Binding CategoryTotal}"
+                HorizontalTextAlignment="Center" />
+        </StackLayout>
     </StackLayout>
 </ContentPage>
-    

@@ -41,6 +41,14 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\AddCategoryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AddExpensePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -58,9 +66,6 @@
     <Compile Include="Views\CategoryPage.xaml.cs">
       <DependentUpon>CategoryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\empty.xaml.cs">
-      <DependentUpon>empty.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\PrismIntroPage.xaml.cs">
       <DependentUpon>PrismIntroPage.xaml</DependentUpon>
     </Compile>
@@ -75,6 +80,14 @@
     <Compile Include="IDbDataWriter.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ViewModels\AddCategoryPageViewModel.cs" />
+    <Compile Include="Views\AddCategoryPage.xaml.cs">
+      <DependentUpon>AddCategoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddExpensePage.xaml.cs">
+      <DependentUpon>AddExpensePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AddExpensePageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\CategoryPage.xaml">
@@ -143,12 +156,6 @@
     <Reference Include="MySql.Data.CF">
       <HintPath>..\MySql.Data.CF.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Views\empty.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Constants\" />

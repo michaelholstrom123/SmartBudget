@@ -30,10 +30,11 @@ namespace PrismIntro
             
 
             containerRegistry.RegisterForNavigation<RegisterPage>();
-            containerRegistry.RegisterForNavigation<empty>();
+            containerRegistry.RegisterForNavigation<AddExpensePage, AddExpensePageViewModel>();
             containerRegistry.RegisterForNavigation<CategoryPage, CategoryPageViewModel>();
             containerRegistry.RegisterForNavigation<MainPage,MainPageViewModel>();
             containerRegistry.RegisterForNavigation<PrismIntroPage, IntroToPrismsPageViewModel>();
+            containerRegistry.RegisterForNavigation<AddCategoryPage, AddCategoryPageViewModel>();
 
             containerRegistry.RegisterSingleton<IRepository, Repository>();
 
